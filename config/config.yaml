@@ -1,0 +1,170 @@
+# 地形傾斜度・歩行環境と糖尿病管理指標の生態学的研究 設定ファイル
+# プロジェクト: NDB_XXX_slope_diabetes
+# 作成日: 2026-03-09
+
+# 実験モード
+experiment_mode: false  # テストデータの場合はtrue、実データの場合はfalse
+
+# プロジェクトメタデータ
+project_name: "地形傾斜度と糖尿病管理_都道府県別生態学的研究"
+project_id: "NDB_XXX_slope_diabetes"
+target_theme: "地形傾斜度・歩行環境が糖尿病管理指標（HbA1c・BMI等）に与える影響の都道府県レベル横断研究"
+
+# データソース
+data_sources:
+  checkup_examination: "07_特定健診"    # HbA1c, BMI, 腹囲, 中性脂肪
+  checkup_questionnaire: "07_特定健診"  # Q3-Q4（運動習慣）
+  terrain: "slope_fracture_project"      # NDB_XXX_slope_fractureから再利用
+  census_2020: "external_data"           # 人口密度、DID比率、高齢化率
+  ses: "external_data"                   # 所得、失業率
+
+# 曝露変数（独立変数）
+exposure_variables:
+  slope:
+    name: "地形傾斜度（平均傾斜度）"
+    description: "DEM加重平均傾斜度（度）"
+    unit: "度（degrees）"
+    variable_name: "avg_slope_weighted"
+    data_source_primary: "projects/NDB_XXX_slope_fracture/03_Analysis/data/processed/analysis_dataset_v1.csv"
+    data_source_fallback: "projects/NDB_XXX_slope_fracture/03_Analysis/data/interim/slope_by_prefecture_final.csv"
+    coverage: "47/47都道府県（全都道府県データあり、slope_fracture最終データから取得）"
+  walkability_index:
+    name: "歩行環境指数（複合指標）"
+    description: "人口密度とDID比率のZ-score平均"
+    components:
+      - "人口密度（人/km²）"
+      - "都市化率（DID人口比率 %）"
+    calculation: "(zscore(人口密度) + zscore(都市化率)) / 2"
+    data_source: "令和2年国勢調査"
+    coverage: "47/47都道府県（欠損なし）"
+
+# アウトカム変数（従属変数）
+outcome_variables:
+  hba1c:
+    name: "HbA1c平均値"
+    data_source: "特定健診検査"
+    unit: "%"
+    variable_name: "hba1c_mean"
+    file_name: "HbA1c 都道府県別性年齢階級別分布.xlsx"
+    interpretation: "主要アウトカム（血糖コントロール指標）"
+  bmi_obesity:
+    name: "BMI肥満者割合"
+    data_source: "特定健診検査"
+    threshold: 25  # BMI≥25を肥満と定義（日本基準）
+    unit: "%"
+    variable_name: "bmi_obesity_rate"
+    file_name: "BMI  都道府県別性年齢階級別分布.xlsx"
+  waist:
+    name: "腹囲平均値"
+    data_source: "特定健診検査"
+    unit: "cm"
+    variable_name: "waist_mean"
+    file_name: "腹囲 都道府県別性年齢階級別分布.xlsx"
+  triglycerides:
+    name: "中性脂肪平均値"
+    data_source: "特定健診検査"
+    unit: "mg/dL"
+    variable_name: "triglycerides_mean"
+    file_name: "中性脂肪 都道府県別性年齢階級別分布.xlsx"
+
+# 調整変数（交絡因子）
+adjustment_variables:
+  aging_rate:
+    name: "高齢化率"
+    description: "65歳以上人口割合"
+    unit: "%"
+    data_source: "令和2年国勢調査"
+    variable_name: "aging_rate"
+  income:
+    name: "1人当たり県民所得"
+    unit: "千円"
+    data_source: "県民経済計算 2020年度（内閣府）"
+    variable_name: "income_per_capita_1k"
+  unemployment:
+    name: "完全失業率"
+    unit: "%"
+    data_source: "労働力調査 2021年（総務省）"
+    variable_name: "unemployment_rate"
+  exercise:
+    name: "運動習慣率"
+    description: "Q3（30分×週2回以上運動）とQ4（1日1時間以上歩行）の平均回答率"
+    questions: ["Q3", "Q4"]
+    variable_name: "exercise_habit_rate"
+    file_names:
+      q3: "標準的な質問票（質問項目３） 都道府県別性年齢階級別分布.xlsx"
+      q4: "標準的な質問票（質問項目４） 都道府県別性年齢階級別分布.xlsx"
+
+# 入力パス（プロジェクトルートからの相対パス）
+input_paths:
+  ndb_opendata: "02_Data/raw/NDB_OpenData/No.10"
+  questionnaire: "02_Data/raw/NDB_OpenData/No.10/07_特定健診 質問票/01_公費レセプトを含まないデータ"
+  examination: "02_Data/raw/NDB_OpenData/No.10/07_特定健診 検査/01_公費レセプトを含まないデータ/（※1）NDBの特定健診情報のうち、基本情報レコードと健診結果・問診結果情報レコードを集計したもの"
+  slope_data_primary: "projects/NDB_XXX_slope_fracture/03_Analysis/data/processed/analysis_dataset_v1.csv"
+  slope_data_interim: "projects/NDB_XXX_slope_fracture/03_Analysis/data/interim/slope_by_prefecture_final.csv"
+  a38_boundaries: "02_Data/raw/A38_Medical_Area"
+  external_data: "projects/NDB_XXX_slope_diabetes/data/external"
+
+# 出力パス（プロジェクトルートからの相対パス）
+output_paths:
+  interim: "projects/NDB_XXX_slope_diabetes/data/interim"
+  results: "projects/NDB_XXX_slope_diabetes/results"
+  figures: "projects/NDB_XXX_slope_diabetes/results/figures"
+  tables: "projects/NDB_XXX_slope_diabetes/results/tables"
+  reports: "projects/NDB_XXX_slope_diabetes/results/reports"
+  logs: "projects/NDB_XXX_slope_diabetes/results/logs"
+
+# 解析パラメータ
+analysis_parameters:
+  age_standardization: true  # NDB集計で年齢調整済み
+  target_sex: "both"  # 男女合計
+  missing_threshold: 0.30  # 30%以上の欠損で除外
+
+  # 統計検定設定
+  correlation_method: "pearson"  # ピアソン相関係数
+  alpha: 0.05  # 有意水準
+
+  # 回帰モデル設定
+  regression_type: "OLS"  # 最小二乗法（ベースライン）
+  check_multicollinearity: true  # 多重共線性チェック
+  vif_threshold: 5.0  # VIF > 5.0で多重共線性あり
+
+  # 空間分析設定（条件付き）
+  spatial_autocorrelation_test: true
+  moran_i_permutations: 999  # Moran's I検定のパーミュテーション回数
+  spatial_model_selection: "conditional"  # Moran's I有意（p<0.05）の場合のみ
+  spatial_weight_type: "queen"  # Queen隣接行列（都道府県境界）
+  knn_補完_for_islands: true  # 孤立都道府県（沖縄等）のKNN補完
+  knn_k: 1
+
+# 可視化設定
+visualization:
+  japanese_font: "Meiryo"  # 日本語フォント（Windows）
+  figure_format: "png"
+  dpi: 300
+  color_scheme: "viridis"  # カラーマップ
+  watermark: true  # experiment_mode=trueの場合に透かし追加
+
+  # 地図設定
+  prefecture_geojson: "projects/NDB_XXX_slope_diabetes/data/external/japan_prefectures_47.geojson"
+  map_projection: "mercator"
+
+# ログ設定
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_to_file: true
+  log_path: "projects/NDB_XXX_slope_diabetes/results/logs"
+
+# 再現性設定
+reproducibility:
+  random_seed: 42  # 乱数シード固定
+  save_intermediate_data: true  # 中間データ保存
+  data_versioning: false  # DVC等を使う場合はtrue
+
+# 参考文献（論文用）
+references:
+  key_papers:
+    - "Sallis JF et al. (2016). 都市環境と身体活動: Lancet."
+    - "Frank LD et al. (2010). 歩行環境と肥満の関連: AJHP."
+    - "Hanibuchi T et al. (2012). 日本における近隣環境と歩行: JUH."
+  ndb_citation: "厚生労働省 第10回NDBオープンデータ (2021年度診療分)"
+  census_citation: "総務省統計局 令和2年国勢調査"
