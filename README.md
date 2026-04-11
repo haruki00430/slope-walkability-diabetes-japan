@@ -1,3 +1,5 @@
+﻿> **正本リポジトリ（GitHub Private）：** https://github.com/haruki00430/NDB_XXX_slope_diabetes
+
 # 地形傾斜度・歩行環境が糖尿病管理指標に与える影響：47都道府県の横断的生態学的研究
 (NDB_XXX_slope_diabetes)
 
