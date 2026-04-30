@@ -19,6 +19,8 @@ format:
 resource-path:
   - "."
   - ".."
+bibliography: ../references.bib
+csl: ../vancouver.csl
 ---
 
 ---
@@ -46,6 +48,9 @@ HbA1c (mean ± SD: 5.74 ± 0.04%) showed no spatial autocorrelation (Moran's I =
 BMI obesity exhibits strong spatial spillover effects across prefectures, suggesting social contagion or shared environmental factors. In contrast, HbA1c management appears driven by local individual-level factors. These findings imply that obesity prevention requires inter-prefectural coordination, while diabetes control strategies can focus on within-prefecture interventions.
 
 **Keywords**: built environment; topographic slope; walkability; diabetes management; spatial autocorrelation; ecological study
+
+
+**Keywords:** diabetes; ecological study; Japan; health insurance claims
 
 ---
 
