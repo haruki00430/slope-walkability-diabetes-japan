@@ -1,13 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 3b: 社会経済変数取得（既存データから取得）
+Phase 3b: Acquire Socioeconomic Covariates
+        / 社会経済共変量の取得
 
-入力:
-- projects/NDB_XXX_greenspace_mental_health/data/interim/socioeconomic_data.csv
+Extract prefecture-level socioeconomic variables (income per capita,
+unemployment rate, educational attainment) from the shared intermediate
+dataset prepared in the NDB_XXX_greenspace_mental_health project.
+These variables serve as confounders in the OLS regression models.
+NDB_XXX_greenspace_mental_healthプロジェクトで整備された共有中間データから
+都道府県別の社会経済変数（1人当たり所得・完全失業率・教育水準）を取得する。
+これらはOLS回帰モデルの交絡因子として使用する。
 
-出力:
-- data/interim/ses_variables.csv
+Input / 入力:
+    projects/NDB_XXX_greenspace_mental_health/data/interim/socioeconomic_data.csv
+        Shared socioeconomic dataset / 共有社会経済データ
+
+Output / 出力:
+    data/interim/ses_variables.csv
+        Prefecture-level socioeconomic covariates (N=47)
+        都道府県別社会経済共変量（N=47都道府県）
 """
 
 import pandas as pd

@@ -1,10 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 1a: NDB検査データ抽出（HbA1c、BMI、腹囲、中性脂肪）
+Phase 1a: Extract NDB Health Checkup Examination Data
+       / NDB検査データ抽出（HbA1c、BMI、腹囲、中性脂肪）
 
-入力: NDB特定健診検査Excel（HbA1c、BMI、中性脂肪、腹囲）
-出力: examination_outcomes.csv（都道府県別検査指標）
+Extract prefecture-level diabetes management indicators from the NDB Open Data
+No.10 specific health checkup examination Excel files.
+NDB特定健診検査Excelから都道府県別の糖尿病管理指標を抽出する。
+
+Input / 入力:
+    NDB Open Data No.10 examination Excel files (HbA1c, BMI, waist circumference,
+    triglycerides) / NDB特定健診検査Excel（HbA1c、BMI、腹囲、中性脂肪）
+
+Output / 出力:
+    data/interim/examination_outcomes.csv
+        Prefecture-level health checkup indicators (N=47)
+        都道府県別検査指標（N=47都道府県）
 """
 
 import pandas as pd

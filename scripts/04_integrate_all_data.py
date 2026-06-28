@@ -1,18 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 4: データ統合
+Phase 4: Integrate All Datasets into Master Analysis File
+       / 全データ統合（解析用マスターデータセット作成）
 
-入力:
-- data/interim/examination_outcomes.csv（HbA1c, BMI, 腹囲, 中性脂肪）
-- data/interim/questionnaire_exercise.csv（運動習慣Q3-Q4）
-- data/interim/terrain_data_47prefs.csv（地形傾斜度）
-- data/interim/population_walkability.csv（人口密度, DID比率, Walkability Index）
-- data/interim/ses_variables.csv（所得, 失業率, 教育水準）
+Merge all intermediate datasets from Phases 1–3 into a single analysis-ready
+CSV. Two versions are produced: the full 47-prefecture dataset used for
+walkability analyses, and a slope-complete subset (N=25) where terrain data
+are available for all prefectures.
+Phase 1〜3の全中間データを結合して解析用マスターデータセットを作成する。
+全47都道府県版（ウォーカビリティ解析用）と傾斜度データが揃っている
+都道府県のみのサブセット（N=25）の2種類を出力する。
 
-出力:
-- data/interim/analysis_dataset_full.csv（N=47、全変数）
-- data/interim/analysis_dataset_slope_complete.csv（N=25、slope有りのみ）
+Input / 入力:
+    data/interim/examination_outcomes.csv      — HbA1c, BMI, waist, triglycerides
+    data/interim/questionnaire_exercise.csv    — Exercise habits (Q3–Q4)
+    data/interim/terrain_data_47prefs.csv      — Topographic slope / 地形傾斜度
+    data/interim/population_walkability.csv    — Population density, DID ratio, walkability
+    data/interim/ses_variables.csv             — Income, unemployment, education
+
+Output / 出力:
+    data/interim/analysis_dataset_full.csv
+        Master analysis dataset, all 47 prefectures, all variables
+        解析用マスターデータ（N=47都道府県、全変数）
+    data/interim/analysis_dataset_slope_complete.csv
+        Subset with complete topographic slope data (N=25)
+        傾斜度データが揃っている都道府県のみ（N=25）
 """
 
 import pandas as pd

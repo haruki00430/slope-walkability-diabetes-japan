@@ -1,10 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 1b: NDB質問票データ抽出（Q3・Q4運動習慣）
+Phase 1b: Extract NDB Health Checkup Questionnaire Data (Exercise Habits)
+        / NDB質問票データ抽出（Q3・Q4運動習慣）
 
-入力: NDB特定健診質問票Excel（Q3, Q4）
-出力: questionnaire_exercise.csv（都道府県別回答率）
+Extract prefecture-level exercise habit response rates from the NDB Open Data
+No.10 specific health checkup questionnaire Excel files (Q3: regular exercise,
+Q4: walking or equivalent physical activity).
+NDB特定健診質問票Excelから都道府県別の運動習慣回答率（Q3・Q4）を抽出する。
+
+Input / 入力:
+    NDB Open Data No.10 questionnaire Excel files (Q3, Q4)
+    NDB特定健診質問票Excel（Q3, Q4）
+
+Output / 出力:
+    data/interim/questionnaire_exercise.csv
+        Prefecture-level exercise habit response rates (N=47)
+        都道府県別運動習慣回答率（N=47都道府県）
 """
 
 import pandas as pd

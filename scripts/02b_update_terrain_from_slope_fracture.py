@@ -1,12 +1,27 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 2b: 地形データ補完（slope_fracture最終データから全47都道府県取得）
+Phase 2b: Supplement Terrain Data to Cover All 47 Prefectures
+        / 地形データ補完（全47都道府県のデータを確保）
 
-入力:
-- projects/NDB_XXX_slope_fracture/03_Analysis/data/processed/analysis_dataset_v1.csv
-- data/interim/terrain_data_47prefs.csv（既存）
-出力: data/interim/terrain_data_47prefs.csv（更新版、47都道府県すべてデータあり）
+Fill any missing prefectures in the terrain dataset by cross-referencing the
+final analysis dataset from the NDB_XXX_slope_fracture project. This step
+ensures complete coverage of all 47 Japanese prefectures before downstream
+integration.
+NDB_XXX_slope_fractureプロジェクトの最終解析データセットを参照して、
+傾斜度データが欠損している都道府県を補完する。これにより、以降の統合
+処理で全47都道府県のデータが揃う。
+
+Input / 入力:
+    projects/NDB_XXX_slope_fracture/03_Analysis/data/processed/analysis_dataset_v1.csv
+        Final slope_fracture analysis dataset / slope_fracture最終データセット
+    data/interim/terrain_data_47prefs.csv
+        Existing terrain dataset (may have gaps) / 既存の傾斜度データ（一部欠損あり）
+
+Output / 出力:
+    data/interim/terrain_data_47prefs.csv (updated / 更新版)
+        Complete topographic slope data for all 47 prefectures
+        全47都道府県の地形傾斜度データ（補完済み）
 """
 
 import pandas as pd

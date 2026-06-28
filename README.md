@@ -1,40 +1,176 @@
-﻿> **正本リポジトリ（GitHub Private）：** https://github.com/haruki00430/NDB_XXX_slope_diabetes
+# Topographic Slope, Urban Walkability, and Diabetes Management in Japan
 
-# 地形傾斜度・歩行環境が糖尿病管理指標に与える影響：47都道府県の横断的生態学的研究
-(NDB_XXX_slope_diabetes)
+**A Spatial Ecological Study of 47 Japanese Prefectures Using NDB Open Data**
 
-## ステータス（2026-04-05 リポジトリ照合）
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-- **原稿**: `04_Manuscripts/Manuscript_Slope_Diabetes.qmd`
-- **備考**: 解析スクリプト・中間データの有無は `analysis/`・`data/` を確認。README の記述とずれる場合は実体を正とする。
+---
 
-## プロジェクトの目的
+## Citation
 
-**地形傾斜度**（DEMから算出した加重平均傾斜度）と**歩行環境指数**（人口密度・DID比率のZ-score平均）が、都道府県別の糖尿病管理指標（HbA1c、BMI肥満者割合、腹囲、中性脂肪等）にどう関連するかを横断的生態学研究（N=47）で検証する。NDB特定健診データとNDB_XXX_slope_fractureで整備した地形データを統合し、高齢化率・所得・失業率・運動習慣で調整したOLS回帰と、Moran's I有意時のみの空間回帰を行う。
+> Saito H, Ohira T. Association between Topographic Slope, Urban Walkability, and Diabetes Management Indicators: An Ecological Study of 47 Japanese Prefectures. *Journal of Community Health*. [in review] 2026.
 
-## データソース
+---
 
-- **内部データ:** NDBオープンデータ第10回（特定健診 検査・質問票）
-  - 検査: HbA1c、BMI、腹囲、中性脂肪（都道府県別性年齢階級別分布）
-  - 質問票: Q3・Q4（運動習慣）
-- **地形データ:** NDB_XXX_slope_fracture プロジェクトの成果物（都道府県別傾斜度）を再利用
-- **外部データ:** 令和2年国勢調査（人口密度、DID比率、高齢化率）、県民経済計算、労働力調査
+## Overview
 
-## 曝露・アウトカム・調整変数
+This repository contains the analysis code and result figures for a cross-sectional ecological study examining the associations between **topographic slope**, **urban walkability**, and four diabetes-related indicators (HbA1c, BMI obesity rate, waist circumference, triglycerides) across all **47 Japanese prefectures**.
 
-- **曝露:** 地形傾斜度（avg_slope_weighted）、歩行環境指数（人口密度＋DID比率のZ-score平均）
-- **アウトカム:** HbA1c平均値、BMI肥満者割合（≥25）、腹囲平均値、中性脂肪平均値
-- **調整変数:** 高齢化率、1人当たり県民所得、完全失業率、運動習慣率
+Data were obtained from the National Database of Health Insurance Claims and Specific Health Checkups (NDB) Open Data No.10 (fiscal year 2021). The walkability index was constructed from population density and densely inhabited district (DID) ratio. Ordinary least squares (OLS) regression was applied, with conditional spatial lag models (SLM) estimated when Moran's I indicated significant spatial autocorrelation.
 
-## 構造
+### Key Findings
 
-- `config/`: 解析設定（config.yaml：曝露・アウトカム・調整変数、入出力パス、回帰・空間・可視化パラメータ）
-- `data/`: external（国勢調査等）、interim（健診抽出・地形統合済みCSV）
-- `scripts/`: 検査・質問票抽出、地形統合、人口密度取得等のETL・解析スクリプト
-- `results/`: ログ、図表、表、レポート
-- `docs/`: 実装計画（implementation_plan.md）、データディクショナリ、セッションログ
+- **Urban walkability** was consistently and protectively associated with all diabetes indicators (HbA1c β = −0.023, *p* = 0.003)
+- **BMI obesity** showed strong spatial spillover across prefectures (spatial lag ρ = 0.753, *p* < 0.001; SLM ΔAIC = −30.9 vs OLS)
+- **HbA1c** exhibited no spatial autocorrelation (Moran's I = −0.072, *p* = 0.638), suggesting locally-determined management factors
+- **Topographic slope** showed weak direct associations, implying urban design matters more than natural terrain at the population level
 
-## 注意事項
+---
 
-- NDB生データは読取専用。実データを外部AIに送信しないこと（CLAUDE.md準拠）。
-- 地形データは slope_fracture の最終データから47都道府県分を取得・補完している。空間分析はMoran's I有意時のみSLM/SEMを適用する設計。
+## Data Sources
+
+| Dataset | Source | URL |
+|---------|--------|-----|
+| NDB Open Data No.10 (FY2021) | Ministry of Health, Labour and Welfare, Japan | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html |
+| Digital Elevation Model (DEM) | Geospatial Information Authority of Japan | https://www.gsi.go.jp/ |
+| Population Census 2020 | Statistics Bureau of Japan | https://www.e-stat.go.jp/ |
+| National Accounts 2020 | Cabinet Office of Japan | https://www.esri.cao.go.jp/ |
+
+> **Note:** NDB raw data are not included in this repository. They are publicly available from the MHLW link above.
+
+---
+
+## Repository Structure
+
+```
+NDB_XXX_slope_diabetes/
+├── README.md
+├── LICENSE                          # CC-BY 4.0
+├── requirements.txt                 # Python dependencies
+├── config/
+│   └── config.yaml                  # Analysis parameters (exposures, outcomes, paths)
+├── scripts/
+│   ├── README.md                    # Execution order guide
+│   ├── 01a_extract_examination.py   # Extract NDB health checkup examination data
+│   ├── 01b_extract_questionnaire_exercise.py  # Extract exercise habit questionnaire data
+│   ├── 02_integrate_terrain_data.py # Integrate topographic slope data
+│   ├── 02b_update_terrain_from_slope_fracture.py  # Supplement terrain data (all 47 prefectures)
+│   ├── 03a_acquire_population_density.py  # Derive walkability index from Census 2020
+│   ├── 03b_acquire_ses_variables.py # Acquire socioeconomic covariates
+│   ├── 04_integrate_all_data.py     # Merge all intermediate datasets
+│   ├── 05_exploratory_analysis.py   # Exploratory data analysis (EDA)
+│   ├── 06a_ols_regression.py        # OLS regression (Models 1–3 × 4 outcomes)
+│   ├── 06b_spatial_regression.py    # Spatial autocorrelation & conditional SLM/SEM
+│   └── 08_create_figures.py         # Generate Figures 1–4 for manuscript
+├── data/
+│   ├── external/                    # Publicly available data (Census, DEM-derived)
+│   └── interim/                     # Processed intermediate files (generated by scripts)
+├── results/
+│   ├── figures/                     # Output figures (PNG)
+│   ├── tables/                      # Output tables (CSV)
+│   └── reports/                     # Analysis reports (Markdown)
+└── docs/
+    ├── data_dictionary.md           # Variable definitions
+    └── implementation_plan.md       # Study design and analytical plan
+```
+
+---
+
+## Requirements
+
+Python 3.9 or higher is required.
+
+```bash
+pip install -r requirements.txt
+```
+
+Key packages: `pandas`, `numpy`, `geopandas`, `statsmodels`, `esda`, `libpysal`, `spreg`, `matplotlib`, `seaborn`, `scipy`
+
+---
+
+## Usage
+
+Run scripts in numbered order. Each script reads from `data/` and writes outputs to `data/interim/` or `results/`.
+
+```bash
+# Step 1: Extract NDB health checkup data
+python scripts/01a_extract_examination.py
+python scripts/01b_extract_questionnaire_exercise.py
+
+# Step 2: Integrate topographic slope data
+python scripts/02_integrate_terrain_data.py
+python scripts/02b_update_terrain_from_slope_fracture.py
+
+# Step 3: Acquire walkability index and socioeconomic variables
+python scripts/03a_acquire_population_density.py
+python scripts/03b_acquire_ses_variables.py
+
+# Step 4: Merge all datasets
+python scripts/04_integrate_all_data.py
+
+# Step 5: Exploratory analysis
+python scripts/05_exploratory_analysis.py
+
+# Step 6: Statistical analysis
+python scripts/06a_ols_regression.py
+python scripts/06b_spatial_regression.py
+
+# Step 8: Generate manuscript figures
+python scripts/08_create_figures.py
+```
+
+See [`scripts/README.md`](scripts/README.md) for detailed execution instructions.
+
+---
+
+## License
+
+Analysis code and figures are released under the [Creative Commons Attribution 4.0 International (CC-BY 4.0)](LICENSE) license.
+
+NDB raw data are not included and are subject to the terms of use set by the Ministry of Health, Labour and Welfare of Japan.
+
+---
+
+## Zenodo Archive
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+
+---
+
+---
+
+## 日本語概要
+
+### プロジェクト概要
+
+本リポジトリは、日本全47都道府県を対象とした横断的生態学的研究の解析コードと図表を含みます。**地形傾斜度**（DEMから算出した加重平均傾斜度）と**歩行環境指数**（人口密度・DID比率のZ-score平均）が、糖尿病管理指標（HbA1c、BMI肥満率、腹囲、中性脂肪）に与える影響を検討しました。
+
+NDBオープンデータ第10回（2021年度）を使用し、OLS回帰と条件付き空間ラグモデル（SLM）を適用しています。
+
+### 主な結果
+
+- **歩行環境指数**は全糖尿病指標で一貫した保護的関連（HbA1c β = −0.023, *p* = 0.003）
+- **BMI肥満率**に強い都道府県間スピルオーバー（空間ラグ係数 ρ = 0.753, *p* < 0.001）
+- **HbA1c**は空間的自己相関なし（Moran's I = −0.072, *p* = 0.638）
+- **地形傾斜度**の直接効果は限定的
+
+### データソース
+
+- NDBオープンデータ：厚生労働省（https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html）
+- DEM（数値標高モデル）：国土地理院（https://www.gsi.go.jp/）
+- 国勢調査2020：統計局（https://www.e-stat.go.jp/）
+
+> NDB生データは本リポジトリに含まれません。上記URLより無料で入手可能です。
+
+### 実行環境
+
+```bash
+pip install -r requirements.txt
+python scripts/01a_extract_examination.py
+# ... (scripts/README.md の実行順序を参照)
+```
+
+### ライセンス
+
+解析コード・図表：[CC-BY 4.0](LICENSE)

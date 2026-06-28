@@ -1,12 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 2: 地形データ統合（slope_fracture再利用）
+Phase 2: Integrate Topographic Slope Data (Reused from slope_fracture project)
+       / 地形データ統合（slope_fracture プロジェクトから再利用）
 
-入力:
-- projects/NDB_XXX_slope_fracture/03_Analysis/data/interim/slope_by_prefecture_final.csv
-- data/interim/examination_outcomes.csv（47都道府県リスト）
-出力: data/interim/terrain_data_47prefs.csv
+Merge prefecture-level weighted-mean topographic slope values (derived from
+10 m DEM, Geospatial Information Authority of Japan) with the 47-prefecture
+master list obtained in Phase 1a. Slope data are reused from the companion
+project NDB_XXX_slope_fracture to avoid redundant computation.
+国土地理院10m DEMから算出した都道府県別加重平均傾斜度を、Phase 1aで
+取得した47都道府県リストに統合する。傾斜度データはNDB_XXX_slope_fracture
+プロジェクトの成果物を再利用する。
+
+Input / 入力:
+    projects/NDB_XXX_slope_fracture/03_Analysis/data/interim/slope_by_prefecture_final.csv
+        Prefecture-level slope data from companion project
+        姉妹プロジェクトの都道府県別傾斜度データ
+    data/interim/examination_outcomes.csv
+        47-prefecture reference list / 47都道府県リスト
+
+Output / 出力:
+    data/interim/terrain_data_47prefs.csv
+        Topographic slope for matched prefectures
+        マッチした都道府県の地形傾斜度
 """
 
 import pandas as pd

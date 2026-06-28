@@ -1,17 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 6b: 空間回帰分析（Moran's I → SLM/SEM）
+Phase 6b: Spatial Autocorrelation Testing and Conditional Spatial Regression
+        / 空間的自己相関検定・条件付き空間回帰分析
 
-入力:
-- data/interim/analysis_dataset_full.csv
-- data/external/japan_prefectures_47.geojson
+Test for spatial autocorrelation in OLS residuals using Global Moran's I with
+Queen contiguity weights (K-nearest-neighbor supplement for island prefectures).
+When Moran's I is significant (p < 0.05), estimate both Spatial Lag Model (SLM)
+and Spatial Error Model (SEM) by maximum likelihood, and select the best model
+by AIC. This conditional approach avoids applying spatial models unnecessarily.
+OLS残差に対してグローバルMoran's I（Queen隣接ウェイト、島嶼部はKNN補完）
+で空間的自己相関を検定する。有意（p < 0.05）な場合のみ空間ラグモデル（SLM）
+と空間誤差モデル（SEM）を最尤法で推定し、AICにより最良モデルを選択する。
+この条件付きアプローチにより、不要な空間モデル適用を回避する。
 
-出力:
-- results/tables/morans_i_test.csv
-- results/tables/spatial_model_comparison.csv（有意な場合のみ）
-- results/figures/morans_scatter_plot.png（有意な場合のみ）
-- results/reports/spatial_analysis_results.md
+Input / 入力:
+    data/interim/analysis_dataset_full.csv         — Master dataset (N=47)
+    data/external/japan_prefectures_47.geojson     — Prefecture boundary polygons
+
+Output / 出力:
+    results/tables/morans_i_test.csv
+        Global Moran's I test results for each outcome
+        各アウトカムのグローバルMoran's I 検定結果
+    results/tables/spatial_model_comparison.csv    (only if significant / 有意な場合のみ)
+        OLS vs SLM vs SEM: AIC, pseudo R², spatial lag coefficient (rho/lambda)
+    results/figures/morans_scatter_plot.png        (only if significant / 有意な場合のみ)
+        Moran scatterplot and LISA cluster map
+    results/reports/spatial_analysis_results.md   — Full spatial analysis report
 """
 
 import pandas as pd

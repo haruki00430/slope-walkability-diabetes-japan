@@ -1,15 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 3a: 人口密度・DID比率取得（Census 2020）
+Phase 3a: Derive Walkability Index from Population Census 2020
+        / ウォーカビリティ指数の算出（国勢調査2020）
 
-入力:
-- data/external/census_2020_population.csv（総人口）
-- data/external/census_2020_did_table_1_2.xlsx（DID人口）
-- data/external/census_2020_area.csv（面積）
+Calculate prefecture-level population density and Densely Inhabited District
+(DID) ratio from the 2020 Population Census of Japan, then construct a
+composite walkability index as the mean of their Z-scores:
+    Walkability = (Z_PopDensity + Z_DID_ratio) / 2
+国勢調査2020から都道府県別人口密度とDID（人口集中地区）比率を算出し、
+両者のZ-score平均としてウォーカビリティ指数を構成する。
 
-出力:
-- data/interim/population_walkability.csv
+Input / 入力:
+    data/external/census_2020_population.csv
+        Total population by prefecture / 都道府県別総人口
+    data/external/census_2020_did_table_1_2.xlsx
+        DID population table / DID人口表
+    data/external/census_2020_area.csv
+        Habitable land area by prefecture / 都道府県別可住地面積
+
+Output / 出力:
+    data/interim/population_walkability.csv
+        Population density, DID ratio, and walkability index (N=47)
+        人口密度・DID比率・ウォーカビリティ指数（N=47都道府県）
 """
 
 import pandas as pd

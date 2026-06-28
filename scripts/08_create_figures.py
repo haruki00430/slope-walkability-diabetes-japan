@@ -1,20 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 8: 可視化（Figure 1-4作成）
+Phase 8: Generate Manuscript Figures (Figures 1–4)
+       / 論文図の作成（Figure 1〜4）
 
-入力:
-- data/interim/analysis_dataset_full.csv
-- data/external/japan_prefectures_47.geojson
-- results/tables/ols_summary_all_outcomes.csv
-- results/tables/morans_i_test.csv
-- results/tables/spatial_model_comparison.csv
+Create the four publication-ready figures for the manuscript at 300 dpi:
+  Figure 1 — Geographic distribution maps of key variables (slope, walkability,
+              HbA1c, BMI obesity) across 47 Japanese prefectures (choropleth)
+  Figure 2 — Forest plot of OLS regression coefficients (β) for walkability and
+              slope across all four outcomes, with 95% confidence intervals
+  Figure 3 — Scatter plot grid: walkability vs each diabetes indicator (N=47),
+              with OLS regression line and 95% CI
+  Figure 4 — Spatial autocorrelation analysis: Moran scatterplot, LISA cluster
+              map, and OLS vs SLM model performance comparison for BMI obesity
+論文用図（Figure 1〜4、300dpi）を生成する。
 
-出力:
-- results/figures/figure1_study_overview_map.png
-- results/figures/figure2_forest_plot.png
-- results/figures/figure3_scatter_grid.png
-- results/figures/figure4_spatial_autocorrelation.png
+Input / 入力:
+    data/interim/analysis_dataset_full.csv          — Master dataset (N=47)
+    data/external/japan_prefectures_47.geojson      — Prefecture boundary polygons
+    results/tables/ols_summary_all_outcomes.csv     — OLS regression results
+    results/tables/morans_i_test.csv                — Moran's I test results
+    results/tables/spatial_model_comparison.csv     — SLM/SEM model comparison
+
+Output / 出力:
+    results/figures/figure1_study_overview_map.png      — Choropleth maps (4-panel)
+    results/figures/figure2_forest_plot.png             — Regression coefficient forest plot
+    results/figures/figure3_scatter_grid.png            — Walkability vs outcome scatter grid
+    results/figures/figure4_spatial_autocorrelation.png — Spatial analysis summary (4-panel)
 """
 
 import pandas as pd
@@ -111,53 +123,46 @@ def load_data():
 def create_figure1_study_overview_map(gdf, output_dir):
     """
     Figure 1: Study Overview Map（3パネルchoropleth）
-
-    Panel A: HbA1c平均値
-    Panel B: 地形傾斜度
-    Panel C: Walkability Index
+    カラーバーは各パネル下部に水平配置
     """
+    from matplotlib.cm import ScalarMappable
+    from matplotlib.colors import Normalize
+
     logger.info("\n--- Figure 1: Study Overview Map作成 ---")
 
-    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    panels = [
+        {'col': 'hba1c_mean',         'cmap': 'YlOrRd',  'label': 'Mean HbA1c (%)',    'title': 'A. Mean HbA1c (%)'},
+        {'col': 'avg_slope_weighted',  'cmap': 'terrain',  'label': 'Mean Slope (°)',     'title': 'B. Topographic Slope (°)'},
+        {'col': 'walkability_index',   'cmap': 'viridis',  'label': 'Walkability Index',  'title': 'C. Walkability Index'},
+    ]
 
-    # Panel A: HbA1c平均値
-    gdf.plot(
-        column='hba1c_mean',
-        cmap='YlOrRd',
-        legend=True,
-        ax=axes[0],
-        edgecolor='black',
-        linewidth=0.5,
-        legend_kwds={'label': 'HbA1c平均値 (%)', 'orientation': 'vertical'}
-    )
-    axes[0].set_title('A. HbA1c平均値（%）', fontsize=14, weight='bold')
-    axes[0].axis('off')
+    fig, axes = plt.subplots(1, 3, figsize=(21, 6))
 
-    # Panel B: 地形傾斜度
-    gdf.plot(
-        column='avg_slope_weighted',
-        cmap='terrain',
-        legend=True,
-        ax=axes[1],
-        edgecolor='black',
-        linewidth=0.5,
-        legend_kwds={'label': '平均傾斜度 (度)', 'orientation': 'vertical'}
-    )
-    axes[1].set_title('B. 地形傾斜度（度）', fontsize=14, weight='bold')
-    axes[1].axis('off')
+    for ax, p in zip(axes, panels):
+        col  = p['col']
+        vmin = gdf[col].min()
+        vmax = gdf[col].max()
 
-    # Panel C: Walkability Index
-    gdf.plot(
-        column='walkability_index',
-        cmap='viridis',
-        legend=True,
-        ax=axes[2],
-        edgecolor='black',
-        linewidth=0.5,
-        legend_kwds={'label': 'Walkability Index', 'orientation': 'vertical'}
-    )
-    axes[2].set_title('C. Walkability Index', fontsize=14, weight='bold')
-    axes[2].axis('off')
+        gdf.plot(
+            column=col,
+            cmap=p['cmap'],
+            vmin=vmin,
+            vmax=vmax,
+            legend=False,
+            ax=ax,
+            edgecolor='black',
+            linewidth=0.5,
+        )
+        ax.set_title(p['title'], fontsize=13, weight='bold')
+        ax.axis('off')
+
+        # カラーバーを下部に水平配置
+        sm = ScalarMappable(cmap=p['cmap'], norm=Normalize(vmin=vmin, vmax=vmax))
+        sm.set_array([])
+        cbar = fig.colorbar(sm, ax=ax, orientation='horizontal',
+                            shrink=0.75, pad=0.02, fraction=0.04, aspect=30)
+        cbar.set_label(p['label'], fontsize=11)
+        cbar.ax.tick_params(labelsize=9)
 
     plt.tight_layout()
     output_file = output_dir / "figure1_study_overview_map.png"
@@ -230,7 +235,7 @@ def create_figure2_forest_plot(ols_results, output_dir):
     # 軸設定
     ax.set_yticks(y_positions)
     ax.set_yticklabels(exposure_vars['Label'], fontsize=10)
-    ax.set_xlabel('β係数 (95% CI)', fontsize=12, weight='bold')
+    ax.set_xlabel('β Coefficient (95% CI)', fontsize=12, weight='bold')
     ax.set_title('Figure 2. Forest Plot of Regression Coefficients\n(Model 3: Slope + Walkability)',
                  fontsize=14, weight='bold', pad=20)
     ax.grid(axis='x', alpha=0.3)
@@ -264,13 +269,13 @@ def create_figure3_scatter_grid(gdf, ols_results, output_dir):
     # プロット設定
     plots = [
         {'outcome': 'hba1c_mean', 'exposure': 'avg_slope_weighted',
-         'outcome_label': 'HbA1c平均値 (%)', 'exposure_label': '地形傾斜度 (度)', 'ax': axes[0, 0]},
+         'outcome_label': 'Mean HbA1c (%)', 'exposure_label': 'Topographic Slope (°)', 'ax': axes[0, 0]},
         {'outcome': 'hba1c_mean', 'exposure': 'walkability_index',
-         'outcome_label': 'HbA1c平均値 (%)', 'exposure_label': 'Walkability Index', 'ax': axes[0, 1]},
+         'outcome_label': 'Mean HbA1c (%)', 'exposure_label': 'Walkability Index', 'ax': axes[0, 1]},
         {'outcome': 'bmi_obesity_rate', 'exposure': 'avg_slope_weighted',
-         'outcome_label': 'BMI肥満率 (%)', 'exposure_label': '地形傾斜度 (度)', 'ax': axes[1, 0]},
+         'outcome_label': 'BMI Obesity Rate (%)', 'exposure_label': 'Topographic Slope (°)', 'ax': axes[1, 0]},
         {'outcome': 'bmi_obesity_rate', 'exposure': 'walkability_index',
-         'outcome_label': 'BMI肥満率 (%)', 'exposure_label': 'Walkability Index', 'ax': axes[1, 1]}
+         'outcome_label': 'BMI Obesity Rate (%)', 'exposure_label': 'Walkability Index', 'ax': axes[1, 1]}
     ]
 
     for i, plot_config in enumerate(plots):
@@ -397,9 +402,9 @@ def create_figure4_spatial_autocorrelation(gdf, moran_results, spatial_compariso
     ax.plot(residuals_std, moran.I * residuals_std, color='red', linewidth=2, label=f"Moran's I = {moran.I:.3f}")
 
     # 軸ラベル
-    ax.set_xlabel('標準化残差', fontsize=11)
-    ax.set_ylabel('空間ラグ（標準化残差）', fontsize=11)
-    ax.set_title(f"Panel A: Moran's I散布図\nI = {moran.I:.3f}, p < 0.001", fontsize=12, weight='bold')
+    ax.set_xlabel('Standardized Residuals', fontsize=11)
+    ax.set_ylabel('Spatial Lag (Standardized Residuals)', fontsize=11)
+    ax.set_title(f"Panel A: Moran's I Scatter Plot\nI = {moran.I:.3f}, p < 0.001", fontsize=12, weight='bold')
     ax.axhline(y=0, color='black', linestyle='--', linewidth=1, alpha=0.5)
     ax.axvline(x=0, color='black', linestyle='--', linewidth=1, alpha=0.5)
     ax.legend(loc='upper left', fontsize=10)
@@ -428,16 +433,16 @@ def create_figure4_spatial_autocorrelation(gdf, moran_results, spatial_compariso
 
         ax.set_ylabel('R² / Pseudo R²', fontsize=11)
         ax.set_ylim(0, 1)
-        ax.set_title(f"Panel B: モデル比較\nSLM rho = {slm_rho:.3f} (p < 0.001)", fontsize=12, weight='bold')
+        ax.set_title(f"Panel B: Model Comparison\nSLM rho = {slm_rho:.3f} (p < 0.001)", fontsize=12, weight='bold')
         ax.grid(axis='y', alpha=0.3)
 
         # rho係数の説明テキスト
-        textstr = f'空間ラグ係数 (rho) = {slm_rho:.3f}\n隣接都道府県のBMI肥満率が\n1%増加すると、当該都道府県は\n{slm_rho:.2f}%増加'
+        textstr = f'Spatial lag coeff. (rho) = {slm_rho:.3f}\nA 1% increase in neighboring\nprefectures\' obesity rate is\nassociated with {slm_rho:.2f}% increase'
         ax.text(0.98, 0.02, textstr, transform=ax.transAxes, fontsize=9,
                 verticalalignment='bottom', horizontalalignment='right',
                 bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.3))
     else:
-        ax.text(0.5, 0.5, '空間モデル比較データなし', transform=ax.transAxes,
+        ax.text(0.5, 0.5, 'No spatial model comparison data available', transform=ax.transAxes,
                 fontsize=12, ha='center', va='center')
         ax.axis('off')
 

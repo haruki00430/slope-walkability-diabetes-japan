@@ -1,19 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 5: 探索的データ解析（EDA）
+Phase 5: Exploratory Data Analysis (EDA)
+       / 探索的データ解析
 
-入力:
-- data/interim/analysis_dataset_full.csv
+Conduct descriptive statistics, correlation analysis, variance inflation factor
+(VIF) tests, and visual EDA on the master analysis dataset. Outputs include
+Table 1 (descriptive statistics for the manuscript), a correlation heatmap,
+distribution plots, and bivariate scatter plots.
+マスターデータセットに対して、記述統計・相関分析・VIF検定・視覚的EDAを実施する。
+論文用Table 1（記述統計）、相関ヒートマップ、分布図、散布図を出力する。
 
-出力:
-- results/reports/eda_summary.md
-- results/figures/eda_correlation_heatmap.png
-- results/figures/eda_distributions.png
-- results/figures/eda_bivariate_scatter.png
-- results/tables/table1_descriptive_stats.csv
-- results/tables/correlation_matrix.csv
-- results/tables/vif_multicollinearity.csv
+Input / 入力:
+    data/interim/analysis_dataset_full.csv
+        Master analysis dataset (N=47) / 解析用マスターデータ（N=47）
+
+Output / 出力:
+    results/reports/eda_summary.md           — EDA summary report / EDA要約レポート
+    results/figures/eda_correlation_heatmap.png  — Variable correlation matrix heatmap
+    results/figures/eda_distributions.png    — Distribution plots for all variables
+    results/figures/eda_bivariate_scatter.png — Exposure–outcome scatter plots
+    results/tables/table1_descriptive_stats.csv — Table 1: descriptive statistics
+    results/tables/correlation_matrix.csv    — Full correlation matrix
+    results/tables/vif_multicollinearity.csv — Variance inflation factors
 """
 
 import pandas as pd

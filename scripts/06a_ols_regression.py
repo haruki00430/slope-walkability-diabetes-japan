@@ -1,18 +1,34 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Phase 6a: OLS回帰分析（Walkability & Slope models）
+Phase 6a: Ordinary Least Squares (OLS) Regression Analysis
+        / OLS回帰分析（ウォーカビリティ・傾斜度モデル）
 
-入力:
-- data/interim/analysis_dataset_full.csv
+Fit three OLS regression models for each of four diabetes-related outcomes
+(HbA1c, BMI obesity rate, waist circumference, triglycerides), adjusting
+for aging rate and income per capita. Also compute model diagnostics
+(VIF, Shapiro-Wilk, Breusch-Pagan) and Moran's I on residuals to determine
+whether spatial regression is needed in the next step.
+4つの糖尿病関連アウトカム（HbA1c・BMI肥満率・腹囲・中性脂肪）それぞれに
+対して3つのOLSモデルを適合させる（高齢化率・1人当たり所得で調整）。
+モデル診断（VIF・Shapiro-Wilk・Breusch-Pagan）と残差Moran's Iを実施し、
+次ステップの空間回帰適用の要否を判断する。
 
-出力:
-- results/tables/ols_model1_walkability_hba1c.csv
-- results/tables/ols_model2_slope_hba1c.csv
-- results/tables/ols_model3_combined_hba1c.csv
-- results/tables/ols_summary_all_outcomes.csv
-- results/figures/ols_diagnostics.png
-- results/reports/ols_regression_results.md
+Models / モデル:
+    Model 1: Walkability → Outcome (adjusted) / ウォーカビリティ → アウトカム
+    Model 2: Slope → Outcome (adjusted)       / 傾斜度 → アウトカム
+    Model 3: Slope + Walkability → Outcome (adjusted) / 複合モデル
+
+Input / 入力:
+    data/interim/analysis_dataset_full.csv  — Master dataset (N=47)
+
+Output / 出力:
+    results/tables/ols_model1_walkability_hba1c.csv  — Model 1 results
+    results/tables/ols_model2_slope_hba1c.csv        — Model 2 results
+    results/tables/ols_model3_combined_hba1c.csv     — Model 3 results
+    results/tables/ols_summary_all_outcomes.csv      — All outcomes summary table
+    results/figures/ols_diagnostics.png              — Diagnostic plots (Q-Q, residuals)
+    results/reports/ols_regression_results.md        — Full results report
 """
 
 import pandas as pd
