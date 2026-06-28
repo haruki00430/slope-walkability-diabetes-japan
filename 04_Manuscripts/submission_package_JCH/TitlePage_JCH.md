@@ -41,7 +41,7 @@ ORCID: 0009-0009-7890-6068
 
 **Objective:** We examined associations between topographic slope, urban walkability, and diabetes management indicators (HbA1c, BMI obesity rate, waist circumference, triglycerides) across all 47 Japanese prefectures, and tested whether spatial autocorrelation and spillover effects exist.
 
-**Methods:** We conducted a cross-sectional ecological study using data from all 47 Japanese prefectures. Diabetes indicators were obtained from the National Database of Health Insurance Claims (NDB) Open Data No.10 (fiscal year 2021). Topographic slope was derived from digital elevation models, and a walkability index was constructed from population density and densely inhabited district ratio. Ordinary least squares (OLS) regression was performed, adjusting for aging rate and income per capita. Spatial autocorrelation was tested using Moran's I, with conditional spatial lag models (SLM) applied when significant.
+**Methods:** We conducted a cross-sectional ecological study using data from all 47 Japanese prefectures. Diabetes indicators were obtained from the National Database of Health Insurance Claims (NDB) Open Data No.10 (fiscal year 2023). Topographic slope was derived from digital elevation models, and a walkability index was constructed from population density and densely inhabited district ratio. Ordinary least squares (OLS) regression was performed, adjusting for aging rate and income per capita. Spatial autocorrelation was tested using Moran's I, with conditional spatial lag models (SLM) applied when significant.
 
 **Results:** HbA1c showed no spatial autocorrelation (Moran's I = −0.072, *p* = 0.638), with the OLS model explaining 37.0% of variance. Walkability was significantly protective for HbA1c (β = −0.023, *p* = 0.003). BMI obesity exhibited strong spatial clustering (Moran's I = 0.519, *p* < 0.0001), with SLM substantially outperforming OLS (Pseudo R² = 0.784 vs. R² = 0.437, ΔAIC = −30.9). The spatial lag coefficient (ρ = 0.753, *p* < 0.001) indicated strong cross-prefectural spillover in obesity.
 
@@ -87,7 +87,7 @@ Not applicable.
 
 ### Data Availability
 
-The NDB Open Data (Ministry of Health, Labour and Welfare) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/NDB_XXX_slope_diabetes [Zenodo DOI: *TBD — to be added after Zenodo registration*].
+The NDB Open Data (Ministry of Health, Labour and Welfare) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/slope-walkability-diabetes-japan [Zenodo DOI: *TBD — to be added after Zenodo registration*].
 
 ### Authors' Contributions
 

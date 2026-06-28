@@ -17,7 +17,7 @@
 
 This repository contains the analysis code and result figures for a cross-sectional ecological study examining the associations between **topographic slope**, **urban walkability**, and four diabetes-related indicators (HbA1c, BMI obesity rate, waist circumference, triglycerides) across all **47 Japanese prefectures**.
 
-Data were obtained from the National Database of Health Insurance Claims and Specific Health Checkups (NDB) Open Data No.10 (fiscal year 2021). The walkability index was constructed from population density and densely inhabited district (DID) ratio. Ordinary least squares (OLS) regression was applied, with conditional spatial lag models (SLM) estimated when Moran's I indicated significant spatial autocorrelation.
+Data were obtained from the National Database of Health Insurance Claims and Specific Health Checkups (NDB) Open Data No.10 (fiscal year 2023). The walkability index was constructed from population density and densely inhabited district (DID) ratio. Ordinary least squares (OLS) regression was applied, with conditional spatial lag models (SLM) estimated when Moran's I indicated significant spatial autocorrelation.
 
 ### Key Findings
 
@@ -32,7 +32,7 @@ Data were obtained from the National Database of Health Insurance Claims and Spe
 
 | Dataset | Source | URL |
 |---------|--------|-----|
-| NDB Open Data No.10 (FY2021) | Ministry of Health, Labour and Welfare, Japan | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html |
+| NDB Open Data No.10 (FY2023) | Ministry of Health, Labour and Welfare, Japan | https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html |
 | Digital Elevation Model (DEM) | Geospatial Information Authority of Japan | https://www.gsi.go.jp/ |
 | Population Census 2020 | Statistics Bureau of Japan | https://www.e-stat.go.jp/ |
 | National Accounts 2020 | Cabinet Office of Japan | https://www.esri.cao.go.jp/ |
@@ -44,7 +44,7 @@ Data were obtained from the National Database of Health Insurance Claims and Spe
 ## Repository Structure
 
 ```
-NDB_XXX_slope_diabetes/
+slope-walkability-diabetes-japan/
 ├── README.md
 ├── LICENSE                          # CC-BY 4.0
 ├── requirements.txt                 # Python dependencies
@@ -79,7 +79,7 @@ NDB_XXX_slope_diabetes/
 
 ## Requirements
 
-Python 3.9 or higher is required.
+Python 3.14 or higher is required.
 
 ```bash
 pip install -r requirements.txt
@@ -146,7 +146,7 @@ NDB raw data are not included and are subject to the terms of use set by the Min
 
 本リポジトリは、日本全47都道府県を対象とした横断的生態学的研究の解析コードと図表を含みます。**地形傾斜度**（DEMから算出した加重平均傾斜度）と**歩行環境指数**（人口密度・DID比率のZ-score平均）が、糖尿病管理指標（HbA1c、BMI肥満率、腹囲、中性脂肪）に与える影響を検討しました。
 
-NDBオープンデータ第10回（2021年度）を使用し、OLS回帰と条件付き空間ラグモデル（SLM）を適用しています。
+NDBオープンデータ第10回（2023年度）を使用し、OLS回帰と条件付き空間ラグモデル（SLM）を適用しています。
 
 ### 主な結果
 

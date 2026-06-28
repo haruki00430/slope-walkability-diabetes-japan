@@ -96,7 +96,7 @@ Editorial Manager 内の各フォームに以下を入力：
 | Funding | No funding was received. |
 | Conflict of Interest | No competing interests. |
 | Ethics Approval | NDB Open Data; publicly available aggregate data; no approval required |
-| Data Availability | Code at https://github.com/haruki00430/NDB_XXX_slope_diabetes |
+| Data Availability | Code at https://github.com/haruki00430/slope-walkability-diabetes-japan |
 | AI Use | Claude Code, Cursor used for scripting; verified by authors |
 
 ### Step 8: Suggested Reviewers（任意）

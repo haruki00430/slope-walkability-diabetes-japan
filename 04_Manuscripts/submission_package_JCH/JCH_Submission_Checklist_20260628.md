@@ -78,7 +78,7 @@
 Fig. 1 Geographic distribution of key variables across 47 Japanese prefectures. Maps show
 prefecture-level spatial patterns of (a) topographic slope (mean degrees), (b) walkability
 index (Z-score), (c) HbA1c (%), and (d) BMI obesity rate (%). Data sources: NDB Open Data
-No.10 (fiscal year 2021), Geospatial Information Authority of Japan, Population Census 2020
+No.10 (fiscal year 2023), Geospatial Information Authority of Japan, Population Census 2020
 
 Fig. 2 Forest plot of regression coefficients (β) from ordinary least squares (OLS) models
 for four diabetes-related outcomes. Walkability showed consistently negative (protective)
@@ -129,7 +129,7 @@ northeastern and southern Japan; (c) residual spatial autocorrelation of OLS mod
 
 ## I. GitHub / Zenodo 準備
 
-- [ ] GitHub リポジトリ（https://github.com/haruki00430/NDB_XXX_slope_diabetes）が Public になっている
+- [ ] GitHub リポジトリ（https://github.com/haruki00430/slope-walkability-diabetes-japan）が Public になっている
 - [ ] README.md（英語・日本語）が整備されている
 - [ ] LICENSE ファイル（CC-BY 4.0）が配置されている
 - [ ] .gitignore に NDB データ・設定フォルダが記載されている

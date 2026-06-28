@@ -29,7 +29,7 @@ Not applicable.
 
 ### Data Availability
 
-The NDB Open Data (Ministry of Health, Labour and Welfare of Japan) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Population Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/NDB_XXX_slope_diabetes [Zenodo DOI: *TBD — to be added after Zenodo registration*].
+The NDB Open Data (Ministry of Health, Labour and Welfare of Japan) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Population Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/slope-walkability-diabetes-japan [Zenodo DOI: *TBD — to be added after Zenodo registration*].
 
 ### Authors' Contributions
 
@@ -46,7 +46,7 @@ Conceptualization: Haruki Saito; Methodology: Haruki Saito; Formal analysis and 
 
 [1] Sun, H., Saeedi, P., Karuranga, S., Pinkepank, M., Ogurtsova, K., Duncan, B. B., Stein, C., Basit, A., Chan, J. C. N., Mbanya, J. C., Pavkov, M. E., Ramachandaran, A., Wild, S. H., James, S., Herman, W. H., Zhang, P., Bommer, C., Kuo, S., Boyko, E. J., & Magliano, D. J. (2022). IDF Diabetes Atlas: Global, regional and country-level diabetes prevalence estimates for 2021 and projections for 2045. *Diabetes Research and Clinical Practice*, *183*, 109119. https://doi.org/10.1016/j.diabres.2021.109119
 
-[2] Ministry of Health, Labour and Welfare. (2021). *National Database of Health Insurance Claims and Specific Health Checkups of Japan, Open Data No.10*. https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html
+[2] Ministry of Health, Labour and Welfare. (2024). *National Database of Health Insurance Claims and Specific Health Checkups of Japan, Open Data No.10 (Fiscal Year 2023)*. https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html
 
 [3] Sallis, J. F., Cerin, E., Conway, T. L., Adams, M. A., Frank, L. D., Pratt, M., Salvo, D., Schipperijn, J., Smith, G., Cain, K. L., Davey, R., Kerr, J., Lai, P.-C., Mitas, J., Reis, R., Sarmiento, O. L., Schofield, G., Troelsen, J., Van Dyck, D., … Owen, N. (2016). Physical activity in relation to urban environments in 14 cities worldwide: A cross-sectional study. *The Lancet*, *387*(10034), 2207–2217. https://doi.org/10.1016/S0140-6736(15)01284-2
 
