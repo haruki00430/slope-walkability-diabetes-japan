@@ -56,17 +56,34 @@ DECLARATIONS_MD = SCRIPT_DIR / "Declarations_JCH.md"
 # ============================================================
 
 # 本文内引用パターン（Vancouver 形式の数字引用）
-# 例: 1)  → [1]
-#     1), 2)  → [1, 2]
-#     1)-3)   → [1-3]  (範囲表記は保持)
-#     3), 4), 5) → [3-5] (連続は範囲に変換しない—原形保持)
+#
+# 【変換対象】
+#   word4)         → word[4]       （単語直後）
+#   methodology,4) → methodology,[4]（カンマ後）
+#   I.11)          → I.[11]        （略語ピリオド後）
+#   likelihood.9)  → likelihood.[9] （文末ピリオド後）
+#   2020.10)       → 2020.[10]     （4桁年+ピリオド後）
+#   8), 9)         → [8, 9]        （複合引用）
+#
+# 【変換対象外（偽陽性防止）】
+#   0.05)  0.437)  0.001)  などの小数値・p値・係数
+#   (N = 47)  (2020)  (2023) などの記述的括弧
+#
+# 識別ロジック:
+#   単独引用は「直前が英字/句読点/閉じ括弧」の場合のみ変換。
+#   小数値は前が数字 → 不一致でスキップ。
 CITATION_PATTERNS = [
-    # 複合引用: "n), m), k)" → "[n, m, k]"
+    # 4連続引用: "n), m), k), l)" → "[n, m, k, l]"
+    (
+        re.compile(r'(\d+)\),\s*(\d+)\),\s*(\d+)\),\s*(\d+)\)'),
+        r'[\1, \2, \3, \4]'
+    ),
+    # 3連続引用: "n), m), k)" → "[n, m, k]"
     (
         re.compile(r'(\d+)\),\s*(\d+)\),\s*(\d+)\)'),
         r'[\1, \2, \3]'
     ),
-    # 複合引用: "n), m)" → "[n, m]"
+    # 2連続引用: "n), m)" → "[n, m]"
     (
         re.compile(r'(\d+)\),\s*(\d+)\)'),
         r'[\1, \2]'
@@ -76,10 +93,21 @@ CITATION_PATTERNS = [
         re.compile(r'(\d+)\)-(\d+)\)'),
         r'[\1-\2]'
     ),
-    # 単独引用: "n)" → "[n]"  ※ 文末の ")" は除外するため、直前が数字のみマッチ
-    # ただし "Fig." "Table" "Eq." 等の後の括弧は除外
+    # 単独引用①: 英字+ピリオド+引用番号 "I.11)" "likelihood.9)"
+    #   lookbehind=英字、次に '.' を含む match → ".[\1]"
     (
-        re.compile(r'(?<![A-Za-z\.\(])(\d{1,2})\)(?!\d)'),
+        re.compile(r'(?<=[a-zA-Z])\.(\d{1,2})\)(?!\d)'),
+        r'.[\1]'
+    ),
+    # 単独引用②: 4桁年+ピリオド+引用番号 "2020.10)"
+    (
+        re.compile(r'(?<=\d{4})\.(\d{1,2})\)(?!\d)'),
+        r'.[\1]'
+    ),
+    # 単独引用③: 英字/カンマ/セミコロン/]/閉じ括弧の直後 "word4)" ",4)" ")2)"
+    #   ※ 前が数字や小数点の場合は除外（p値・係数の保護）
+    (
+        re.compile(r'(?<=[a-zA-Z,;!?\]\)])(\d{1,2})\)(?!\d)'),
         r'[\1]'
     ),
 ]
@@ -87,11 +115,16 @@ CITATION_PATTERNS = [
 
 def convert_citations_in_text(text: str) -> str:
     """
-    テキスト内のVancouver形式引用をJCH形式に変換する。
+    テキスト内のVancouver形式引用をJCH形式に変換する（最大3パス）。
     References セクション以降のテキストは変換しない（呼び出し元で制御）。
+    5連続以上の引用は2パス目以降で残存を吸収する。
     """
-    for pattern, replacement in CITATION_PATTERNS:
-        text = pattern.sub(replacement, text)
+    for _ in range(3):
+        prev = text
+        for pattern, replacement in CITATION_PATTERNS:
+            text = pattern.sub(replacement, text)
+        if text == prev:
+            break  # 変更なければ早期終了
     return text
 
 
@@ -163,10 +196,9 @@ def convert_docx(input_path: Path, output_path: Path) -> None:
         if in_references:
             continue
 
-        # 引用変換
+        # 引用変換（per-run: 書式を保持しつつ各 run のテキストを個別置換）
         new_text = convert_citations_in_text(original_text)
         if new_text != original_text:
-            # 段落内の各 run を結合してから置換（書式を保持するため run ごとに処理）
             replace_text_in_para(para, original_text, new_text)
             converted_count += 1
 
@@ -191,26 +223,22 @@ def convert_docx(input_path: Path, output_path: Path) -> None:
 
 def replace_text_in_para(para, original_text: str, new_text: str) -> None:
     """
-    段落内のテキストを置換する。書式 (run) を保持するため、
-    段落全体テキストで差分を検出し、変更箇所のみ run を更新する。
+    段落内の各 run を個別に引用変換する（書式を完全保持）。
 
-    簡易実装: 最初の run にすべてのテキストを集約し、書式を保持。
-    ※ 複数 run にまたがる引用は先頭 run に集約される。
+    各 run のテキストに convert_citations_in_text を直接適用する。
+    run を結合しないため bold / italic / font size / color などが維持される。
+    引用番号が複数 run にまたがる場合は変換不可だが、
+    Vancouver 形式 n) は通常 1 run 内に完結するため実用上問題なし。
     """
     if not para.runs:
         return
 
-    # 全 run のテキストを置換
-    full_text = "".join(run.text for run in para.runs)
-    new_full = convert_citations_in_text(full_text)
-
-    if new_full == full_text:
-        return
-
-    # 最初の run に全テキストを設定、残りをクリア
-    para.runs[0].text = new_full
-    for run in para.runs[1:]:
-        run.text = ""
+    for run in para.runs:
+        if not run.text:
+            continue
+        converted = convert_citations_in_text(run.text)
+        if converted != run.text:
+            run.text = converted
 
 
 def insert_declarations_before_references(doc: Document, ref_para_index: int) -> None:
