@@ -113,6 +113,44 @@ CITATION_PATTERNS = [
 ]
 
 
+# ============================================================
+# 記号・表記の修正パターン（順序依存あり：長い文字列を先に）
+# ============================================================
+
+SYMBOL_REPLACEMENTS = [
+    # Δ: 文字化け「?AIC」と表記不統一「Delta AIC」を統一
+    ("Delta AIC",   "ΔAIC"),    # Delta AIC → ΔAIC（不統一解消）
+    ("?AIC",        "ΔAIC"),    # ?AIC → ΔAIC（文字化け修正）
+    # Moran's / 所有格アポストロフィ文字化け
+    ("Moran?s",     "Moran’s"),  # Moran?s → Moran's
+    ("outcome?s",   "outcome’s"),
+    # ギリシャ文字（英語スペル → Unicode 記号）
+    ("alpha = ",    "α = "),    # α =
+    ("beta = ",     "β = "),    # β =
+    ("rho = ",      "ρ = "),    # ρ =
+    # R² （上付き 2 なし → Unicode 上付き文字）
+    ("Pseudo R2 = ", "Pseudo R² = "),  # 長い方を先に
+    ("R2 = ",        "R² = "),
+    ("vs R2 =",      "vs R² ="),
+]
+
+
+def apply_symbol_replacements_in_para(para) -> int:
+    """記号置換を各 run に個別適用（書式を完全保持）。変換件数を返す。"""
+    count = 0
+    for run in para.runs:
+        if not run.text:
+            continue
+        text = run.text
+        for old, new in SYMBOL_REPLACEMENTS:
+            if old in text:
+                text = text.replace(old, new)
+        if text != run.text:
+            run.text = text
+            count += 1
+    return count
+
+
 def convert_citations_in_text(text: str) -> str:
     """
     テキスト内のVancouver形式引用をJCH形式に変換する（最大3パス）。
@@ -178,10 +216,11 @@ def convert_docx(input_path: Path, output_path: Path) -> None:
     doc = Document(str(input_path))
 
     converted_count = 0
+    symbol_count = 0
     in_references = False
     references_para_index = None
 
-    # ---- Pass 1: 段落を走査し、引用変換 & References 位置を特定 ----
+    # ---- Pass 1: 段落を走査し、引用変換・記号修正 & References 位置を特定 ----
     for i, para in enumerate(doc.paragraphs):
         original_text = para.text
 
@@ -202,7 +241,11 @@ def convert_docx(input_path: Path, output_path: Path) -> None:
             replace_text_in_para(para, original_text, new_text)
             converted_count += 1
 
+        # 記号・表記修正（per-run: Moran's / ΔAIC / α / β / ρ / R²）
+        symbol_count += apply_symbol_replacements_in_para(para)
+
     print(f"  [INFO] 引用変換: {converted_count} 箇所")
+    print(f"  [INFO] 記号・表記修正: {symbol_count} run")
 
     # ---- Pass 2: Declarations セクションを References の前に挿入 ----
     if references_para_index is not None:
