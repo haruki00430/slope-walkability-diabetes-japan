@@ -140,8 +140,8 @@ northeastern and southern Japan; (c) residual spatial autocorrelation of OLS mod
 
 ## J. 最終チェック
 
-- [ ] Manuscript_JCH.docx の引用番号が連続（[1]〜[35]、飛びなし）
-- [ ] 参照リストに 35 件あり、番号と本文の対応が正しい
+- [ ] Manuscript_JCH.docx の引用番号が連続（[1]〜[34]、飛びなし）
+- [ ] 参照リストに 34 件あり、番号と本文の対応が正しい（旧[22] Nguyen 削除済み）
 - [ ] DOCX をPDF 変換してレイアウトを目視確認
 - [ ] Spell check（英語）を実行済み
 - [ ] Abstract を別の人が確認済み（第二著者レビュー）

@@ -87,7 +87,7 @@ Not applicable.
 
 ### Data Availability
 
-The NDB Open Data (Ministry of Health, Labour and Welfare) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/slope-walkability-diabetes-japan [Zenodo DOI: *TBD — to be added after Zenodo registration*].
+The NDB Open Data (Ministry of Health, Labour and Welfare) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/slope-walkability-diabetes-japan and archived on Zenodo at https://doi.org/10.5281/zenodo.20989085 (CC-BY 4.0).
 
 ### Authors' Contributions
 
