@@ -151,6 +151,88 @@ def apply_symbol_replacements_in_para(para) -> int:
     return count
 
 
+# ============================================================
+# 引用番号の振り直し（Vancouver 初登場順に再番号付け）
+# ============================================================
+#
+# 旧番号 → 新番号 のマッピング（Manuscript_JCH.docx 本文の初登場順）
+# 旧 [22]（Nguyen et al.）は本文未引用のため削除。総数 34 件。
+CITATION_RENUMBER_MAP = {
+     1:  1,   2:  2,   3:  4,   4:  5,   5:  6,
+     6:  7,   7:  8,   8:  9,   9: 10,  10: 11,
+    11: 12,  12: 13,  13: 14,  14: 15,  15: 18,
+    16: 22,  17: 23,  18: 31,  19: 24,  20: 34,
+    21: 33,  23: 25,  24: 19,  25: 20,  26:  3,
+    27: 16,  28: 21,  29: 29,  30: 30,  31: 17,
+    32: 26,  33: 27,  34: 32,  35: 28,
+}
+
+_CITE_BLOCK_RE = re.compile(r'\[(\d[\d,\s\-]*)\]')
+
+
+def _expand_citation_content(content: str) -> list:
+    """'3, 4-7, 9' → [3, 4, 5, 6, 7, 9]"""
+    nums = []
+    for part in re.split(r',\s*', content.strip()):
+        part = part.strip()
+        m = re.match(r'^(\d+)-(\d+)$', part)
+        if m:
+            for n in range(int(m.group(1)), int(m.group(2)) + 1):
+                nums.append(n)
+        elif part.isdigit():
+            nums.append(int(part))
+    return nums
+
+
+def _format_citation_list(nums: list) -> str:
+    """[3, 4, 5, 7, 8] → '[3-5, 7, 8]'  (3以上連続 → 範囲、2連続 → 個別)"""
+    if not nums:
+        return ""
+    sorted_nums = sorted(set(nums))
+    groups = []
+    i = 0
+    while i < len(sorted_nums):
+        start = sorted_nums[i]
+        end = start
+        while i + 1 < len(sorted_nums) and sorted_nums[i + 1] == end + 1:
+            i += 1
+            end = sorted_nums[i]
+        if end - start >= 2:
+            groups.append(f"{start}-{end}")
+        elif end - start == 1:
+            groups.append(str(start))
+            groups.append(str(end))
+        else:
+            groups.append(str(start))
+        i += 1
+    return "[" + ", ".join(groups) + "]"
+
+
+def renumber_citations_in_text(text: str) -> str:
+    """本文中の [old_n] を [new_n] に振り直す（[n], [n-m], [n, m, k] 対応）。"""
+    def _replace(match):
+        old_nums = _expand_citation_content(match.group(1))
+        new_nums = [CITATION_RENUMBER_MAP[n] for n in old_nums
+                    if n in CITATION_RENUMBER_MAP]
+        if not new_nums:
+            return match.group(0)
+        return _format_citation_list(new_nums)
+    return _CITE_BLOCK_RE.sub(_replace, text)
+
+
+def renumber_citations_in_para(para) -> int:
+    """per-run で引用番号を振り直す（書式保持）。変換 run 数を返す。"""
+    count = 0
+    for run in para.runs:
+        if not run.text:
+            continue
+        new_text = renumber_citations_in_text(run.text)
+        if new_text != run.text:
+            run.text = new_text
+            count += 1
+    return count
+
+
 def convert_citations_in_text(text: str) -> str:
     """
     テキスト内のVancouver形式引用をJCH形式に変換する（最大3パス）。
@@ -217,10 +299,11 @@ def convert_docx(input_path: Path, output_path: Path) -> None:
 
     converted_count = 0
     symbol_count = 0
+    renumber_count = 0
     in_references = False
     references_para_index = None
 
-    # ---- Pass 1: 段落を走査し、引用変換・記号修正 & References 位置を特定 ----
+    # ---- Pass 1: 段落を走査し、引用変換・記号修正・番号振直 & References 位置を特定 ----
     for i, para in enumerate(doc.paragraphs):
         original_text = para.text
 
@@ -235,17 +318,21 @@ def convert_docx(input_path: Path, output_path: Path) -> None:
         if in_references:
             continue
 
-        # 引用変換（per-run: 書式を保持しつつ各 run のテキストを個別置換）
+        # Step 1: 引用変換 n) → [n]（per-run、書式保持）
         new_text = convert_citations_in_text(original_text)
         if new_text != original_text:
             replace_text_in_para(para, original_text, new_text)
             converted_count += 1
 
-        # 記号・表記修正（per-run: Moran's / ΔAIC / α / β / ρ / R²）
+        # Step 2: 記号・表記修正（per-run: Moran's / ΔAIC / α / β / ρ / R²）
         symbol_count += apply_symbol_replacements_in_para(para)
 
-    print(f"  [INFO] 引用変換: {converted_count} 箇所")
+        # Step 3: 引用番号振り直し [old] → [new]（per-run、書式保持）
+        renumber_count += renumber_citations_in_para(para)
+
+    print(f"  [INFO] 引用変換 n)→[n]: {converted_count} 箇所")
     print(f"  [INFO] 記号・表記修正: {symbol_count} run")
+    print(f"  [INFO] 引用番号振り直し: {renumber_count} run")
 
     # ---- Pass 2: Declarations セクションを References の前に挿入 ----
     if references_para_index is not None:
