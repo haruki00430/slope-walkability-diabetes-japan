@@ -123,11 +123,11 @@ Consent for Publication
 Not applicable.
 
 Data Availability
-The NDB Open Data (Ministry of Health, Labour and Welfare of Japan) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Population Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/NDB_XXX_slope_diabetes.
+The NDB Open Data (Ministry of Health, Labour and Welfare of Japan) used in this study are publicly available at https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation model data are available from the Geospatial Information Authority of Japan (https://www.gsi.go.jp/). Population Census data are available from e-Stat (https://www.e-stat.go.jp/). Analysis code is openly available at https://github.com/haruki00430/slope-walkability-diabetes-japan.
 
 Authors' Contributions
-[Author 1] conceptualized the study, performed data acquisition and statistical analysis, created all visualizations, and wrote the manuscript. [Author 2] reviewed the manuscript and provided critical revisions. All authors read and approved the final manuscript.
-Conceptualization: [Author 1]; Methodology: [Author 1]; Formal analysis and investigation: [Author 1]; Writing — original draft preparation: [Author 1]; Writing — review and editing: [Author 1], [Author 2]; Resources: [Author 1].
+Haruki Saito conceptualized the study, performed data acquisition and statistical analysis, created all visualizations, and wrote the manuscript. Tetsuya Ohira reviewed the manuscript and provided critical revisions. All authors read and approved the final manuscript.
+Conceptualization: Haruki Saito; Methodology: Haruki Saito; Formal analysis and investigation: Haruki Saito; Writing — original draft preparation: Haruki Saito; Writing — review and editing: Haruki Saito, Tetsuya Ohira; Resources: Haruki Saito.
 """
 
 
