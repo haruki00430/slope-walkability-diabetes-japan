@@ -1,30 +1,31 @@
-# Topographic Slope, Urban Walkability, and Diabetes Management in Japan
+# Outcome-Specific Spatial Dependence of Metabolic Health: Obesity Exhibits Regional Dependence Whereas Glycemic Control Does Not
 
-**A Spatial Ecological Study of 47 Japanese Prefectures Using NDB Open Data**
+**A Spatial Ecological Study of 47 Japanese Prefectures Using NDB Open Data (FY2023)**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20989085.svg)](https://doi.org/10.5281/zenodo.20989085)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ---
 
 ## Citation
 
-> Saito H, Ohira T. Association between Topographic Slope, Urban Walkability, and Diabetes Management Indicators: An Ecological Study of 47 Japanese Prefectures. *Journal of Community Health*. [in review] 2026.
+> Saito H, Ohira T. Outcome-Specific Spatial Dependence of Metabolic Health: Obesity Exhibits Regional Dependence Whereas Glycemic Control Does Not. *Obesity Research & Clinical Practice*. [submitted] 2026.  
+> Code archive: https://doi.org/10.5281/zenodo.20989085
 
 ---
 
 ## Overview
 
-This repository contains the analysis code and result figures for a cross-sectional ecological study examining the associations between **topographic slope**, **urban walkability**, and four diabetes-related indicators (HbA1c, BMI obesity rate, waist circumference, triglycerides) across all **47 Japanese prefectures**.
+This repository contains the analysis code and result figures for a cross-sectional ecological study examining whether **metabolic health indicators share the same spatial dependence structure** across all **47 Japanese prefectures**. Exposures include **topographic slope** and **urban walkability**; outcomes are HbA1c, BMI obesity rate, waist circumference, and triglycerides.
 
-Data were obtained from the National Database of Health Insurance Claims and Specific Health Checkups (NDB) Open Data No.10 (fiscal year 2023). The walkability index was constructed from population density and densely inhabited district (DID) ratio. Ordinary least squares (OLS) regression was applied, with conditional spatial lag models (SLM) estimated when Moran's I indicated significant spatial autocorrelation.
+Data were obtained from the National Database of Health Insurance Claims and Specific Health Checkups (NDB) Open Data No.10 (**fiscal year 2023**). The walkability index was constructed from population density and densely inhabited district (DID) ratio. Ordinary least squares (OLS) regression was applied, with conditional spatial lag models (SLM) estimated when Moran's I indicated significant spatial autocorrelation.
 
 ### Key Findings
 
-- **Urban walkability** was consistently and protectively associated with all diabetes indicators (HbA1c β = −0.023, *p* = 0.003)
+- **Spatial dependence is outcome-specific**: BMI obesity clustered regionally (Moran's I = 0.519, *p* < 0.0001), whereas HbA1c did not (Moran's I = −0.072, *p* = 0.638)
+- **Urban walkability** was consistently and protectively associated with all metabolic indicators (HbA1c β = −0.023, *p* = 0.003)
 - **BMI obesity** showed strong spatial spillover across prefectures (spatial lag ρ = 0.753, *p* < 0.001; SLM ΔAIC = −30.9 vs OLS)
-- **HbA1c** exhibited no spatial autocorrelation (Moran's I = −0.072, *p* = 0.638), suggesting locally-determined management factors
-- **Topographic slope** showed weak direct associations, implying urban design matters more than natural terrain at the population level
+- **Topographic slope** showed weaker direct associations, suggesting built-environment factors may matter more than terrain at the population level
 
 ---
 
@@ -134,7 +135,9 @@ NDB raw data are not included and are subject to the terms of use set by the Min
 
 ## Zenodo Archive
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20989085.svg)](https://doi.org/10.5281/zenodo.20989085)
+
+Permanent archive: [10.5281/zenodo.20989085](https://doi.org/10.5281/zenodo.20989085) (CC-BY 4.0, released 2026-06-28)
 
 ---
 
@@ -144,15 +147,17 @@ NDB raw data are not included and are subject to the terms of use set by the Min
 
 ### プロジェクト概要
 
-本リポジトリは、日本全47都道府県を対象とした横断的生態学的研究の解析コードと図表を含みます。**地形傾斜度**（DEMから算出した加重平均傾斜度）と**歩行環境指数**（人口密度・DID比率のZ-score平均）が、糖尿病管理指標（HbA1c、BMI肥満率、腹囲、中性脂肪）に与える影響を検討しました。
+本リポジトリは、日本全47都道府県を対象とした横断的生態学的研究の解析コードと図表を含みます。論文タイトルは **「Outcome-Specific Spatial Dependence of Metabolic Health: Obesity Exhibits Regional Dependence Whereas Glycemic Control Does Not」**（代謝健康指標におけるアウトカム特異的空間依存性）です。
 
-NDBオープンデータ第10回（2023年度）を使用し、OLS回帰と条件付き空間ラグモデル（SLM）を適用しています。
+**地形傾斜度**（DEMから算出した加重平均傾斜度）と**歩行環境指数**（人口密度・DID比率のZ-score平均）が、代謝指標（HbA1c、BMI肥満率、腹囲、中性脂肪）に与える影響と、**空間依存構造のアウトカム特異性**を検討しました。
+
+NDBオープンデータ第10回（**2023年度**）を使用し、OLS回帰と条件付き空間ラグモデル（SLM）を適用しています。
 
 ### 主な結果
 
-- **歩行環境指数**は全糖尿病指標で一貫した保護的関連（HbA1c β = −0.023, *p* = 0.003）
+- **空間依存はアウトカム特異的**：BMI肥満率は地域的クラスタリング（Moran's I = 0.519）、HbA1cは空間的自己相関なし（Moran's I = −0.072）
+- **歩行環境指数**は全代謝指標で一貫した保護的関連（HbA1c β = −0.023, *p* = 0.003）
 - **BMI肥満率**に強い都道府県間スピルオーバー（空間ラグ係数 ρ = 0.753, *p* < 0.001）
-- **HbA1c**は空間的自己相関なし（Moran's I = −0.072, *p* = 0.638）
 - **地形傾斜度**の直接効果は限定的
 
 ### データソース
