@@ -9,7 +9,8 @@
 
 ## Citation
 
-> Saito H, Ohira T. Outcome-Specific Spatial Dependence of Metabolic Health: Obesity Exhibits Regional Dependence Whereas Glycemic Control Does Not. *Obesity Research & Clinical Practice*. [submitted] 2026.  
+> Saito H, Ohira T. Outcome-Specific Spatial Dependence of Metabolic Health: Obesity Exhibits Regional Dependence Whereas Glycemic Control Does Not. *Health & Place*. Submitted 2026-07-07.  
+> Previously submitted to *Journal of Community Health* (JOHE-D-26-01791) and *Obesity Research & Clinical Practice* (ORCP-D-26-00394).  
 > Code archive: https://doi.org/10.5281/zenodo.20989085
 
 ---
@@ -137,7 +138,12 @@ NDB raw data are not included and are subject to the terms of use set by the Min
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20989085.svg)](https://doi.org/10.5281/zenodo.20989085)
 
-Permanent archive: [10.5281/zenodo.20989085](https://doi.org/10.5281/zenodo.20989085) (CC-BY 4.0, released 2026-06-28)
+Permanent archive: [10.5281/zenodo.20989085](https://doi.org/10.5281/zenodo.20989085) (CC-BY 4.0)
+
+| Version | Date | Note |
+|---------|------|------|
+| v1.0.0 | 2026-06-28 | Initial release (JCH submission) |
+| v1.0.1 | 2026-07-07 | Metadata update for *Health & Place* submission (see `04_Manuscripts/submission_package_JHAP/Zenodo_Update_JHAP_v1.0.1.md`) |
 
 ---
 
