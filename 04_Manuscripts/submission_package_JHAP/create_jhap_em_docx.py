@@ -12,6 +12,7 @@ import shutil
 from pathlib import Path
 
 from docx import Document
+from docx.text.paragraph import Paragraph
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 ORCP_DIR = PACKAGE_DIR.parent / "submission_package_ORCP"
@@ -28,33 +29,38 @@ COPY_AS_IS = [
 # カバーレター: 必須差分のみ（誌名・適合理由・投稿履歴・日付）
 COVER_REPLACEMENTS = [
     (
-        "for consideration for publication in Obesity Research & Clinical Practice "
-        "as an Original Research Article.",
-        "for consideration for publication in Health & Place as an original research article.",
+        "for consideration for publication in Obesity Research & "
+        "Clinical Practice as an Original Research Article.",
+        "for consideration for publication in Health & Place as an "
+        "original research article.",
     ),
     (
-        "Obesity Research & Clinical Practice is ideally suited for this work. The journal's "
-        "focus on the epidemiology and complication of obesity, with particular welcome for "
-        "Asia Oceania studies, directly matches our prefecture-level ecological analysis of "
+        "Obesity Research & Clinical Practice is ideally suited for this "
+        "work. The journal's focus on the epidemiology and complication of "
+        "obesity, with particular welcome for Asia Oceania studies, "
+        "directly matches our prefecture-level ecological analysis of "
         "obesity and glycemic control across Japan.",
-        "Health & Place is ideally suited for this work. The journal's interdisciplinary "
-        "focus on how place shapes health and health-related experiences directly matches "
-        "our prefecture-level spatial epidemiology study across Japan.",
+        "Health & Place is ideally suited for this work. The journal's "
+        "interdisciplinary focus on how place shapes health and "
+        "health-related experiences directly matches our prefecture-level "
+        "spatial epidemiology study across Japan.",
     ),
     (
         "It was previously submitted to the Journal of Community Health "
-        "(Manuscript ID: JOHE-D-26-01791) and was declined after editorial review on "
-        "30 June 2026. It is not currently under consideration at any other journal.",
+        "(Manuscript ID: JOHE-D-26-01791) and was declined after "
+        "editorial review on 30 June 2026. It is not currently under "
+        "consideration at any other journal.",
         "It was previously submitted to the Journal of Community Health "
-        "(Manuscript ID: JOHE-D-26-01791; declined after editorial review on 30 June 2026) "
-        "and to Obesity Research & Clinical Practice "
-        "(Manuscript ID: ORCP-D-26-00394; declined after editorial review on 7 July 2026). "
-        "It is not currently under consideration at any other journal.",
+        "(Manuscript ID: JOHE-D-26-01791; declined after editorial "
+        "review on 30 June 2026) and to Obesity Research & Clinical "
+        "Practice (Manuscript ID: ORCP-D-26-00394; declined after "
+        "editorial review on 7 July 2026). It is not currently under "
+        "consideration at any other journal.",
     ),
 ]
 
 
-def set_paragraph_text(paragraph, text: str) -> None:
+def set_paragraph_text(paragraph: Paragraph, text: str) -> None:
     """段落テキストを置換する。"""
     if paragraph.runs:
         paragraph.runs[0].text = text
@@ -84,11 +90,11 @@ def patch_submission_dates() -> None:
     ]
     for name in targets:
         path = PACKAGE_DIR / name
-        doc = Document(path)
+        doc = Document(str(path))
         for paragraph in doc.paragraphs:
             if paragraph.text.strip() == "Date: 30 June 2026":
                 set_paragraph_text(paragraph, "Date: 7 July 2026")
-        doc.save(path)
+        doc.save(str(path))
         print(f"Patched dates: {name}")
 
 
@@ -100,7 +106,7 @@ def create_cover_letter() -> None:
         raise FileNotFoundError(src)
     shutil.copy2(src, dst)
 
-    doc = Document(dst)
+    doc = Document(str(dst))
     for paragraph in doc.paragraphs:
         text = paragraph.text
         updated = text
@@ -115,8 +121,8 @@ def create_cover_letter() -> None:
             set_paragraph_text(paragraph, "7 July 2026")
             break
 
-    doc.save(dst)
-    print(f"Patched (required diffs only): CoverLetter_JHAP.docx")
+    doc.save(str(dst))
+    print("Patched (required diffs only): CoverLetter_JHAP.docx")
 
 
 def main() -> None:

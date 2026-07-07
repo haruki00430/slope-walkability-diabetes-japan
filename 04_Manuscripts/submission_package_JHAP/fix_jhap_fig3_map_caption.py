@@ -6,14 +6,15 @@ from __future__ import annotations
 from pathlib import Path
 
 from docx import Document
+from docx.document import Document as DocxDocument
 from docx.text.paragraph import Paragraph
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 MANUSCRIPT = PACKAGE_DIR / "Manuscript_JHAP_anonymized.docx"
 
 MAP_NOTE = (
-    "Map lines delineate study areas and do not necessarily depict accepted national "
-    "boundaries."
+    "Map lines delineate study areas and do not necessarily depict "
+    "accepted national boundaries."
 )
 
 
@@ -34,7 +35,7 @@ def append_map_note_if_missing(text: str) -> str | None:
     return f"{text.rstrip()} {MAP_NOTE}"
 
 
-def fix_embedded_fig3_caption(doc: Document) -> bool:
+def fix_embedded_fig3_caption(doc: DocxDocument) -> bool:
     """図テーブル内の Fig. 3 キャプションに地図注記を追加する。"""
     for table in doc.tables:
         for row in table.rows:
@@ -52,9 +53,9 @@ def fix_embedded_fig3_caption(doc: Document) -> bool:
 
 
 def main() -> None:
-    doc = Document(MANUSCRIPT)
+    doc = Document(str(MANUSCRIPT))
     if fix_embedded_fig3_caption(doc):
-        doc.save(MANUSCRIPT)
+        doc.save(str(MANUSCRIPT))
         print(f"Saved {MANUSCRIPT.name}")
     else:
         print("Embedded Fig. 3 caption already has map note or not found")

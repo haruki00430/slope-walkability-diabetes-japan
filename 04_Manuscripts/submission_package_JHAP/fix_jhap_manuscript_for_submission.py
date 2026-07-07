@@ -12,6 +12,7 @@ import shutil
 from pathlib import Path
 
 from docx import Document
+from docx.document import Document as DocxDocument
 from docx.text.paragraph import Paragraph
 
 PACKAGE_DIR = Path(__file__).resolve().parent
@@ -22,19 +23,20 @@ MANUSCRIPT = PACKAGE_DIR / "Manuscript_JHAP_anonymized.docx"
 # Title Page の Data Availability と同一文言（新規作文を避ける）
 DATA_AVAILABILITY_HEADING = "Data availability"
 DATA_AVAILABILITY_TEXT = (
-    "The NDB Open Data (Ministry of Health, Labour and Welfare of Japan) used in this "
-    "study are publicly available at "
-    "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. Digital elevation "
-    "model data are available from the Geospatial Information Authority of Japan "
-    "(https://www.gsi.go.jp/). Population Census data are available from e-Stat "
+    "The NDB Open Data (Ministry of Health, Labour and Welfare of Japan) "
+    "used in this study are publicly available at "
+    "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000177182.html. "
+    "Digital elevation model data are available from the Geospatial "
+    "Information Authority of Japan (https://www.gsi.go.jp/). "
+    "Population Census data are available from e-Stat "
     "(https://www.e-stat.go.jp/). Analysis code is openly available at "
-    "https://github.com/haruki00430/slope-walkability-diabetes-japan and archived on "
-    "Zenodo (https://doi.org/10.5281/zenodo.21237968)."
+    "https://github.com/haruki00430/slope-walkability-diabetes-japan "
+    "and archived on Zenodo (https://doi.org/10.5281/zenodo.21237968)."
 )
 
 MAP_NOTE = (
-    "Map lines delineate study areas and do not necessarily depict accepted national "
-    "boundaries."
+    "Map lines delineate study areas and do not necessarily depict "
+    "accepted national boundaries."
 )
 
 
@@ -56,7 +58,7 @@ def restore_from_orcp() -> None:
     print(f"Restored from {SOURCE.name}")
 
 
-def add_data_availability_section(doc: Document) -> None:
+def add_data_availability_section(doc: DocxDocument) -> None:
     """H&P 必須: AI 開示直前に Data availability を追加（既存ならスキップ）。"""
     for paragraph in doc.paragraphs:
         if paragraph.text.strip().startswith(DATA_AVAILABILITY_HEADING):
@@ -69,13 +71,13 @@ def add_data_availability_section(doc: Document) -> None:
         if p.text.strip().startswith("Declaration of generative AI")
     )
     heading = ai_para.insert_paragraph_before(DATA_AVAILABILITY_HEADING)
-    heading.style = doc.styles["Heading 1"]
+    heading.style = "Heading 1"
     body = ai_para.insert_paragraph_before(DATA_AVAILABILITY_TEXT)
-    body.style = doc.styles["Normal"]
+    body.style = "Normal"
     print("Data availability: added")
 
 
-def append_map_note_to_lisa_caption(doc: Document) -> None:
+def append_map_note_to_lisa_caption(doc: DocxDocument) -> None:
     """H&P 必須: LISA 地図キャプションに境界注記を1箇所だけ追加。"""
     for paragraph in doc.paragraphs:
         text = paragraph.text.strip()
@@ -97,7 +99,7 @@ def append_map_note_to_lisa_caption(doc: Document) -> None:
     print("Map note: LISA caption not found (no change)")
 
 
-def verify_anonymization(doc: Document) -> None:
+def verify_anonymization(doc: DocxDocument) -> None:
     """著者識別情報が含まれていないか簡易チェックする。"""
     banned = [
         "Haruki Saito",
@@ -113,11 +115,11 @@ def verify_anonymization(doc: Document) -> None:
 
 def main() -> None:
     restore_from_orcp()
-    doc = Document(MANUSCRIPT)
+    doc = Document(str(MANUSCRIPT))
     add_data_availability_section(doc)
     append_map_note_to_lisa_caption(doc)
     verify_anonymization(doc)
-    doc.save(MANUSCRIPT)
+    doc.save(str(MANUSCRIPT))
     print(f"Saved {MANUSCRIPT.name} (required H&P edits only)")
 
 

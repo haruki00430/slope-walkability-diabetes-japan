@@ -6,6 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from docx import Document
+from docx.text.paragraph import Paragraph
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 
@@ -18,7 +19,7 @@ TARGETS = [
 ]
 
 
-def replace_in_paragraph(paragraph, old: str, new: str) -> bool:
+def replace_in_paragraph(paragraph: Paragraph, old: str, new: str) -> bool:
     """段落内の DOI を置換する。"""
     if old not in paragraph.text:
         return False
@@ -33,7 +34,7 @@ def replace_in_paragraph(paragraph, old: str, new: str) -> bool:
 
 def replace_in_doc(path: Path) -> int:
     """DOCX 内の Zenodo DOI を置換し、置換回数を返す。"""
-    doc = Document(path)
+    doc = Document(str(path))
     count = 0
     for paragraph in doc.paragraphs:
         if replace_in_paragraph(paragraph, OLD_DOI, NEW_DOI):
@@ -45,7 +46,7 @@ def replace_in_doc(path: Path) -> int:
                     if replace_in_paragraph(paragraph, OLD_DOI, NEW_DOI):
                         count += 1
     if count:
-        doc.save(path)
+        doc.save(str(path))
     return count
 
 
