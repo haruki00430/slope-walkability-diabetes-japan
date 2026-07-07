@@ -2,7 +2,7 @@
 
 **A Spatial Ecological Study of 47 Japanese Prefectures Using NDB Open Data (FY2023)**
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20989085.svg)](https://doi.org/10.5281/zenodo.20989085)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21237968.svg)](https://doi.org/10.5281/zenodo.21237968)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ---
@@ -11,7 +11,7 @@
 
 > Saito H, Ohira T. Outcome-Specific Spatial Dependence of Metabolic Health: Obesity Exhibits Regional Dependence Whereas Glycemic Control Does Not. *Health & Place*. Submitted 2026-07-07.  
 > Previously submitted to *Journal of Community Health* (JOHE-D-26-01791) and *Obesity Research & Clinical Practice* (ORCP-D-26-00394).  
-> Code archive: https://doi.org/10.5281/zenodo.20989085
+> Code archive: https://doi.org/10.5281/zenodo.21237968
 
 ---
 
@@ -136,14 +136,14 @@ NDB raw data are not included and are subject to the terms of use set by the Min
 
 ## Zenodo Archive
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20989085.svg)](https://doi.org/10.5281/zenodo.20989085)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21237968.svg)](https://doi.org/10.5281/zenodo.21237968)
 
-Permanent archive: [10.5281/zenodo.20989085](https://doi.org/10.5281/zenodo.20989085) (CC-BY 4.0)
+Permanent archive: [10.5281/zenodo.21237968](https://doi.org/10.5281/zenodo.21237968) (CC-BY 4.0)
 
 | Version | Date | Note |
 |---------|------|------|
-| v1.0.0 | 2026-06-28 | Initial release (JCH submission) |
-| v1.0.1 | 2026-07-07 | Metadata update for *Health & Place* submission (see `04_Manuscripts/submission_package_JHAP/Zenodo_Update_JHAP_v1.0.1.md`) |
+| v1.0.1 | 2026-07-07 | [10.5281/zenodo.21237968](https://doi.org/10.5281/zenodo.21237968) — *Health & Place* submission metadata |
+| v1.0.0 | 2026-06-28 | [10.5281/zenodo.20989085](https://doi.org/10.5281/zenodo.20989085) — Initial release (JCH submission) |
 
 ---
 

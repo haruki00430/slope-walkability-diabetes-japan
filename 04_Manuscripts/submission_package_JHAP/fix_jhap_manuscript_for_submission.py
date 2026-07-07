@@ -29,7 +29,7 @@ DATA_AVAILABILITY_TEXT = (
     "(https://www.gsi.go.jp/). Population Census data are available from e-Stat "
     "(https://www.e-stat.go.jp/). Analysis code is openly available at "
     "https://github.com/haruki00430/slope-walkability-diabetes-japan and archived on "
-    "Zenodo (https://doi.org/10.5281/zenodo.20989085)."
+    "Zenodo (https://doi.org/10.5281/zenodo.21237968)."
 )
 
 MAP_NOTE = (

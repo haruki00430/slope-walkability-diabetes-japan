@@ -17,7 +17,7 @@
 | **ORCID (Saito)** | 0009-0009-7890-6068 |
 | **ORCID (Ohira)** | 0000-0003-4532-7165 |
 | **データ年度** | NDB Open Data No.10（FY2023） |
-| **コードアーカイブ** | https://doi.org/10.5281/zenodo.20989085 |
+| **コードアーカイブ** | https://doi.org/10.5281/zenodo.21237968（v1.0.1, 2026-07-07） |
 
 ---
 
@@ -112,7 +112,8 @@
 | 優先度 | アクション |
 |--------|-----------|
 | 高 | **EM 投稿**（https://www.editorialmanager.com/jhap/） |
-| 高 | **GitHub push** + Zenodo v1.0.1（`Zenodo_Update_JHAP_v1.0.1.md` 参照） |
+| 高 | **GitHub push** + Zenodo v1.0.1 | **完了**（2026-07-07） |
+| 高 | Data availability / Title Page / README の DOI を `10.5281/zenodo.21237968` に更新 | **完了**（2026-07-07） |
 | 中 | 投稿後 PDF プレビューで `°` / `¥` 文字化け確認 |
 | 低 | ORCP EM でステータス *Rejected* を確認・記録 |
 
@@ -155,4 +156,4 @@
 | 2026-06-30 | 原稿 DOCX の `35?` / `¥` 文字化け修正（`fix_orcp_manuscript_symbols.py`） |
 | 2026-06-30 | **ORCP-D-26-00394 投稿完了**（21:41 JST） |
 | 2026-07-07 | **ORCP desk reject**（ORCP-D-26-00394、査読なし） |
-| 2026-07-07 | 体裁修正（Fig.3 キャプション、宣言類日付、README、Zenodo 手順書） |
+| 2026-07-07 | **Zenodo v1.0.1 発行** — https://zenodo.org/records/21237968（DOI: 10.5281/zenodo.21237968） |
